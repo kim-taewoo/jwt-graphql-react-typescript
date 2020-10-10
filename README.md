@@ -37,3 +37,10 @@
 6. `yarn upgrade-interactive --latest` (디펜던시 버전 업그레이드)
 7. `yarn add express apollo-server-express graphql`
 8. `yarn add -D @types/express @types/graphql`
+
+9. `yarn add type-graphql`
+
+### Notes
+- 타입스크립트와 함께 쓰려면 `type-graphql` 을 쓰는 게 인생을 편하게 해준다.
+- TypeORM 타입을 Type-GraphQL 타입으로 사용할 수 있다. `@ObjectType()` 과 `Field()` 를 이용해서 graphQL 에 노출하고 싶은 필드를 설정한다.
+
