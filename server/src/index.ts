@@ -1,16 +1,30 @@
-import "reflect-metadata";
-// import {createConnection} from "typeorm";
-// import {User} from "./entity/User";
-import express from 'express'
-
+import 'reflect-metadata';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
 
 (async () => {
-    const app = express();
-    app.get('/', (_req, res) => res.send('hello'));
-    app.listen(4000, () => {
-        console.log('express server running')
-    })
-})()
+  const app = express();
+  app.get('/', (_req, res) => res.send('hello'));
+
+  const apolloServer = new ApolloServer({
+    typeDefs: `
+        type Query {
+            hello: String!
+        }
+        `,
+    resolvers: {
+      Query: {
+        hello: () => 'Hello world!',
+      },
+    },
+  });
+  // graphql 을 express 서버에 주입
+  apolloServer.applyMiddleware({ app });
+
+  app.listen(4000, () => {
+    console.log('express server running');
+  });
+})();
 
 // createConnection().then(async connection => {
 
