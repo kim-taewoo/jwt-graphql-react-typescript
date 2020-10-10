@@ -1,5 +1,6 @@
 import {
   Arg,
+  Ctx,
   Query,
   Resolver,
   Mutation,
@@ -8,7 +9,8 @@ import {
 } from 'type-graphql';
 import { User } from './entity/User';
 import { compare, hash } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { MyContext } from './MyContext';
+import { createAccessToken, createRefreshToken } from './auth';
 
 @ObjectType()
 class LoginResponse {
@@ -55,7 +57,8 @@ export class UserResolvers {
     // @Arg 안은 graphql 쿼리문에서 사용될 변수 이름, 괄호 밖은 typescript 변수명:타입.
     //
     @Arg('email') email: string,
-    @Arg('password') password: string
+    @Arg('password') password: string,
+    @Ctx() { res }: MyContext
   ): Promise<LoginResponse> {
     const user = await User.findOne({ where: { email } });
     if (!user) {
@@ -68,9 +71,17 @@ export class UserResolvers {
       throw new Error('Not matching password');
     }
 
+    res.cookie(
+      'jid',
+      createRefreshToken(user),
+      {
+        httpOnly: true
+      }
+    );
+
     // 성공한 경우
     return {
-      accessToken: sign({ userId: user.id }, 'secretkey', { expiresIn: '15m' }),
+      accessToken: createAccessToken(user),
     };
   }
 }

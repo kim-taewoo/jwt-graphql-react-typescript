@@ -9,12 +9,14 @@ import { createConnection } from 'typeorm';
   const app = express();
   app.get('/', (_req, res) => res.send('hello'));
 
+
   await createConnection();
 
   const apolloServer = new ApolloServer({
       schema: await buildSchema({
           resolvers: [UserResolvers]
-      })
+      }),
+      context: ({req, res}) => ({req, res})// graphql 에
   });
   // graphql 을 express 서버에 주입
   apolloServer.applyMiddleware({ app });
