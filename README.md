@@ -13,12 +13,12 @@
 
 ## TODO
 ### Backend
-- [] Setup a GraphQL Server using TypeGraphQL and TypeORM
-- [] Register a user
-- [] Login, and create access && refresh tokens
-- [] Authenticated mutations/queries
-- [] Refresh the token
-- [] Revoke tokens for a user
+- [x] Setup a GraphQL Server using TypeGraphQL and TypeORM
+- [x] Register a user
+- [x] Login, and create access && refresh tokens
+- [x] Authenticated mutations/queries
+- [x] Refresh the token
+- [x] Revoke tokens for a user
 
 ### Frontend
 - [] Setup Apollo and GraphQL Code Generator
@@ -37,7 +37,6 @@
 6. `yarn upgrade-interactive --latest` (디펜던시 버전 업그레이드)
 7. `yarn add express apollo-server-express graphql`
 8. `yarn add -D @types/express @types/graphql`
-
 9. `yarn add type-graphql`
 
 ### Notes
