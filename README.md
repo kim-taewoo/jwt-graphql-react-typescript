@@ -42,11 +42,12 @@
 
 #### client
 1. `npx create-react-app client --template typescript`
-2. `yarn add @apollo/client graphql`
-3. `yarn add -D @types/graphql`
-4. `yarn add -D @graphql-codegen/cli`
-5. `npx graphql-codegen init` (graphql 제너레이터 설정 시작)
-6. `yarn gen`
+2. `cd client`
+3. `yarn add @apollo/client graphql`
+4. `yarn add -D @types/graphql`
+5. `yarn add -D @graphql-codegen/cli`
+6. `npx graphql-codegen init` (graphql 제너레이터 설정 시작)
+7. `yarn gen`
 
 ### Notes
 - 타입스크립트와 함께 쓰려면 `type-graphql` 을 쓰는 게 인생을 편하게 해준다.
