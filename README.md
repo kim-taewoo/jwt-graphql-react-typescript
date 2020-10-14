@@ -29,6 +29,7 @@
 - [] Fetching current user in header
 
 ### 환경 세팅
+#### server
 1. `npm i -g typeorm`
 2. `typeorm init --name server --database postgres` (server 폴더 안에 세팅)
 3. `cd server/`
@@ -38,6 +39,14 @@
 7. `yarn add express apollo-server-express graphql`
 8. `yarn add -D @types/express @types/graphql`
 9. `yarn add type-graphql`
+
+#### client
+1. `npx create-react-app client --template typescript`
+2. `yarn add @apollo/client graphql`
+3. `yarn add -D @types/graphql`
+4. `yarn add -D @graphql-codegen/cli`
+5. `npx graphql-codegen init` (graphql 제너레이터 설정 시작)
+6. `yarn gen`
 
 ### Notes
 - 타입스크립트와 함께 쓰려면 `type-graphql` 을 쓰는 게 인생을 편하게 해준다.
