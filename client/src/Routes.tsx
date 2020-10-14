@@ -1,8 +1,9 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
+import Header from './components/Header';
 
 interface Props {}
 
@@ -10,17 +11,7 @@ export const Routes: React.FC = (props: Props) => {
   return (
     <BrowserRouter>
       <div>
-        <header>
-          <div>
-            <Link to='/'>HOME</Link>
-          </div>
-          <div>
-            <Link to='/register'>REGISTER</Link>
-          </div>
-          <div>
-            <Link to='/login'>LOGIN</Link>
-          </div>
-        </header>
+        <Header />
         <Switch>
           <Route exact path='/' component={Home} />
           <Route exact path='/register' component={Register} />
