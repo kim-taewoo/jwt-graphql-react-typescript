@@ -21,8 +21,8 @@
 - [x] Revoke tokens for a user
 
 ### Frontend
-- [] Setup Apollo and GraphQL Code Generator
-- [] React Router
+- [x] Setup Apollo and GraphQL Code Generator
+- [x] React Router
 - [] Register/Loign
 - [] Persisting session on refresh
 - [] Handling expired tokens
