@@ -16,7 +16,7 @@ dotenv.config({ path: path.join(__dirname, './.env') });
 
 (async () => {
   const app = express();
-  app.use(cookieParser());
+  app.use('/refresh_token', cookieParser());
   app.get('/', (_req, res) => res.send('hello'));
 
   // 리프레시 토큰을 체크하는 라우트를 분리함으로써 보안성을 높일 수 있다.
