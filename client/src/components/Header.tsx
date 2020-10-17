@@ -15,6 +15,9 @@ const Header = (props: Props) => {
       <div>
         <Link to='/login'>LOGIN</Link>
       </div>
+      <div>
+        <Link to='/bye'>BYE</Link>
+      </div>
     </header>
   );
 };

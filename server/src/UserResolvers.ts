@@ -36,7 +36,6 @@ export class UserResolvers {
   bye(
     @Ctx() { payload }: MyContext // Context(Ctx) 에 접근해야 isAuth 미들웨어를 통해 주입한 payload 에 접근 가능하다.
   ) {
-    console.log(payload);
     return `Your user id is: ${payload!.userId}`;
   }
 

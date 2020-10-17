@@ -50,6 +50,11 @@
 7. `yarn gen`
 
 ### Notes
+
+#### Backend
 - 타입스크립트와 함께 쓰려면 `type-graphql` 을 쓰는 게 인생을 편하게 해준다.
 - TypeORM 타입을 Type-GraphQL 타입으로 사용할 수 있다. `@ObjectType()` 과 `Field()` 를 이용해서 graphQL 에 노출하고 싶은 필드를 설정한다.
 - Refresh Token 을 발급하려면 서버 요청마다 토큰을 검증할 수 있어야 하는데, 그걸 위해 Apollo Server 생성자에 **Context** 를 설정해줘야 한다. [참고블로그](https://www.daleseo.com/graphql-apollo-server-auth/)
+
+#### Frontend
+- Apollo Client 의 HttpLink 를 커스텀해서 쓸 경우에는, **모든** HttpLink 인스턴스에 `credentials: 'include'` 를 해주어야만 `set-cookie` 헤더를 받았을 때 제대로 쿠키를 세팅할 수 있다.

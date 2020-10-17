@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import path from 'path';
 import { verify } from 'jsonwebtoken';
+import cors from 'cors';
 import { User } from './entity/User';
 import { createAccessToken, createRefreshToken } from './auth';
 import { sendRefreshToken } from './sendRefreshToken';
@@ -16,12 +17,13 @@ dotenv.config({ path: path.join(__dirname, './.env') });
 
 (async () => {
   const app = express();
+  app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
   app.use('/refresh_token', cookieParser());
+  // app.use(cookieParser());
   app.get('/', (_req, res) => res.send('hello'));
 
   // 리프레시 토큰을 체크하는 라우트를 분리함으로써 보안성을 높일 수 있다.
   app.post('/refresh_token', async (req, res) => {
-    // console.log(req.cookies);
     const token = req.cookies.jid;
     if (!token) {
       return res.send({ ok: false, accessToken: '' });
@@ -47,7 +49,7 @@ dotenv.config({ path: path.join(__dirname, './.env') });
       return res.send({ ok: false, accessToken: '' });
     }
 
-    sendRefreshToken(res, createRefreshToken(user))
+    sendRefreshToken(res, createRefreshToken(user));
 
     return res.send({ ok: true, accessToken: createAccessToken(user) });
   });
@@ -61,7 +63,7 @@ dotenv.config({ path: path.join(__dirname, './.env') });
     context: ({ req, res }) => ({ req, res }), // graphql 에
   });
   // graphql 을 express 서버에 주입
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app, cors: false });
 
   app.listen(4000, () => {
     console.log('express server running');
