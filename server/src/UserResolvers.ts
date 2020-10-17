@@ -16,11 +16,14 @@ import { createAccessToken, createRefreshToken } from './auth';
 import { isAuth } from './isAuth';
 import { sendRefreshToken } from './sendRefreshToken';
 import { getConnection } from 'typeorm';
+import { verify } from 'jsonwebtoken';
 
 @ObjectType()
 class LoginResponse {
   @Field()
   accessToken: string;
+  @Field(() => User)
+  user: User;
 }
 
 // type-graphql 에게 graphql 타입과, typescript 타입을 둘 다 알려준다.
@@ -42,6 +45,25 @@ export class UserResolvers {
   @Query(() => [User])
   users() {
     return User.find();
+  }
+
+  @Query(() => User, { nullable: true })
+  me(
+    @Ctx() context:MyContext
+  ) {
+    const authorization = context.req.headers['authorization'];
+    if (!authorization) {
+      return null;
+    }
+
+    try {
+      const token = authorization.split(' ')[1];
+      const payload:any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
+      return User.findOne(payload.userId)
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 
   @Mutation(() => Boolean)
@@ -74,7 +96,7 @@ export class UserResolvers {
     await getConnection()
       .getRepository(User)
       .increment({ id: userId }, 'tokenVersion', 1);
-    
+
     return true;
   }
 
@@ -101,6 +123,15 @@ export class UserResolvers {
     // 성공한 경우
     return {
       accessToken: createAccessToken(user),
+      user
     };
+  }
+
+  @Mutation(() => Boolean)
+  async logout(
+    @Ctx() {res}: MyContext
+  ) {
+    sendRefreshToken(res, '');
+    return true;
   }
 }

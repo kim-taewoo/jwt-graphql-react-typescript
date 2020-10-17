@@ -28,7 +28,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-const refreshingToken = new TokenRefreshLink({
+const tokenRefreshLink = new TokenRefreshLink({
   accessTokenField: "accessToken",
   isTokenValidOrUndefined: () => {
     const token = getAccessToken();
@@ -61,7 +61,6 @@ const refreshingToken = new TokenRefreshLink({
     // full control over handling token fetch Error
     console.warn('Your refresh token is invalid. Try to relogin');
     console.error(err);
-
     // your custom action here
     // user.logout();
   },
@@ -70,7 +69,7 @@ const refreshingToken = new TokenRefreshLink({
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   credentials: 'include',
-  link: from([refreshingToken, authMiddleware, httpLink]),
+  link: from([tokenRefreshLink, authMiddleware, httpLink]),
 });
 
 ReactDOM.render(

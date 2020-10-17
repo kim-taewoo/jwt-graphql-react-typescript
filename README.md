@@ -23,10 +23,10 @@
 ### Frontend
 - [x] Setup Apollo and GraphQL Code Generator
 - [x] React Router
-- [] Register/Loign
-- [] Persisting session on refresh
-- [] Handling expired tokens
-- [] Fetching current user in header
+- [x] Register/Loign
+- [x] Persisting session on refresh
+- [x] Handling expired tokens
+- [x] Fetching current user in header
 
 ### 환경 세팅
 #### server
@@ -58,3 +58,16 @@
 
 #### Frontend
 - Apollo Client 의 HttpLink 를 커스텀해서 쓸 경우에는, **모든** HttpLink 인스턴스에 `credentials: 'include'` 를 해주어야만 `set-cookie` 헤더를 받았을 때 제대로 쿠키를 세팅할 수 있다.
+- 어떤 graphql 쿼리문으로 인해 다른 쿼리문이 가질 값이 업데이트 된다면(로그인을 하면 현재 유저가 업데이트 되어야 겠지?), ApolloCache 를 업데이트 해주어야 한다. 이 때, 당연히 업데이트 하는 `data` 값은 변화시키려고 하는 대상의 properties 와 일치해야 한다.
+     ```tsx
+    update: (store, {data}) => {
+      if (!data) {
+        return null;
+      }
+      // Apollo Cache 업데이트
+      store.writeQuery({
+        query: MeDocument,
+        data: data.login.user
+      })
+    }
+    ```

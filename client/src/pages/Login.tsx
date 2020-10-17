@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { setAccessToken } from '../accessToken';
-import { useLoginMutation} from '../generated/graphql';
+import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
 
 export const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const [email, setEmail] = useState('');
@@ -16,9 +16,21 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
             email,
             password,
           },
+          update: (store, { data }) => {
+            if (!data) {
+              return null;
+            }
+            // data.login.user 의 properties 가 `me` 쿼리문 결과의 properties 와 동일하기에 가능하다.
+            store.writeQuery<MeQuery>({
+              query: MeDocument,
+              data: {
+                me: data.login.user,
+              },
+            });
+          },
         });
         if (response && response.data) {
-          setAccessToken(response.data.login.accessToken)
+          setAccessToken(response.data.login.accessToken);
         }
         history.push('/');
       }}
